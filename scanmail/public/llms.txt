@@ -1,0 +1,13 @@
+# PhishGuard
+
+> Free, private phishing email checker. Paste a suspicious email and get an instant risk score with a breakdown of red flags — analysis runs entirely in the browser.
+
+PhishGuard inspects sender headers, Reply-To mismatches, look-alike and punycode domains, URL shorteners, raw-IP links, hidden mismatched hyperlinks, and urgency/credential-harvesting language. No signup, no uploads, no data leaves the visitor's device.
+
+## Pages
+
+- [Phishing Email Checker](/): Paste an email and get a phishing risk score plus a full list of detected red flags.
+
+## Guides
+
+- [How to Spot a Phishing Email](/blog/how-to-spot-a-phishing-email): 10 red flags, how to read email headers, phishing types, and what to do if you clicked.

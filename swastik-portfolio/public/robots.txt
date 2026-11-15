@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+
+Sitemap: https://swastiksagar.tech/sitemap.xml
+Sitemap: https://swastiksagar.tech/apps/mitreattack/sitemap.xml
+Sitemap: https://swastiksagar.tech/apps/emailchecker/sitemap.xml

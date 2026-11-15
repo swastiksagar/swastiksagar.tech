@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://swastiksagar.tech/apps/emailchecker/sitemap.xml

@@ -1,0 +1,285 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
+import { useEffect, useState, type ReactNode } from "react";
+
+import appCss from "../styles.css?url";
+import { reportLovableError } from "../lib/lovable-error-reporting";
+
+function NotFoundComponent() {
+  return (
+    <div className="page-wrap flex min-h-[60vh] flex-col justify-center">
+      <p className="font-mono text-xs tracking-wide text-ink-dim">ERR_404</p>
+      <h1 className="mt-4 font-serif text-5xl font-semibold">Page not found</h1>
+      <p className="mt-3 max-w-[60ch] font-serif text-lg text-ink-dim">
+        That tactic or technique isn't in this reference. Head back to the matrix.
+      </p>
+      <div className="mt-7">
+        <Link
+          to="/"
+          className="inline-flex rounded-sm border border-foreground bg-foreground px-4 py-2.5 font-mono text-xs text-background transition-colors hover:border-accent hover:bg-accent"
+        >
+          Back to the matrix
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  console.error(error);
+  const router = useRouter();
+  useEffect(() => {
+    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+  }, [error]);
+
+  return (
+    <div className="page-wrap flex min-h-[60vh] flex-col justify-center">
+      <p className="font-mono text-xs tracking-wide text-ink-dim">ERR_500</p>
+      <h1 className="mt-4 font-serif text-4xl font-semibold">This page didn't load</h1>
+      <p className="mt-3 max-w-[60ch] font-serif text-lg text-ink-dim">
+        Something failed on our end. Try again, or go back to the matrix.
+      </p>
+      <div className="mt-7 flex flex-wrap gap-3">
+        <button
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className="inline-flex rounded-sm border border-foreground bg-foreground px-4 py-2.5 font-mono text-xs text-background transition-colors hover:border-accent hover:bg-accent"
+        >
+          Try again
+        </button>
+        <a
+          href="/"
+          className="inline-flex rounded-sm border border-line-hard px-4 py-2.5 font-mono text-xs text-ink-dim transition-colors hover:border-foreground hover:text-foreground"
+        >
+          Go home
+        </a>
+      </div>
+    </div>
+  );
+}
+
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "XCU8PsfE6vqyPRfX_QmKhNhc9B-wt-h0RifjSORjMRE" },
+      { title: "MITRE ATT&CK Matrix — Plain-Language Field Reference" },
+      {
+        name: "description",
+        content:
+          "All 14 MITRE ATT&CK enterprise tactics in kill-chain order, each with key techniques and the exact telemetry that detects them. Written for working SOC analysts.",
+      },
+      { property: "og:site_name", content: "ATT&CK Field Reference" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "MITRE ATT&CK Matrix — Plain-Language Field Reference" },
+      { name: "twitter:title", content: "MITRE ATT&CK Matrix — Plain-Language Field Reference" },
+      {
+        property: "og:description",
+        content:
+          "All 14 MITRE ATT&CK enterprise tactics in kill-chain order, each with key techniques and the exact telemetry that detects them. Written for working SOC analysts.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "All 14 MITRE ATT&CK enterprise tactics in kill-chain order, each with key techniques and the exact telemetry that detects them. Written for working SOC analysts.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/6405aaa0-5f86-4808-834c-3181aec3ba98",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/6405aaa0-5f86-4808-834c-3181aec3ba98",
+      },
+    ],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap",
+      },
+      { rel: "icon", href: "/favicon-blue.svg?v=1", type: "image/svg+xml", sizes: "any" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://swastiksagar.tech/apps/mitreattack/#organization",
+              name: "ATT&CK Field Reference",
+              url: "https://swastiksagar.tech/apps/mitreattack/",
+              description:
+                "A plain-language field reference to the MITRE ATT&CK enterprise matrix for SOC analysts.",
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://swastiksagar.tech/apps/mitreattack/#website",
+              name: "ATT&CK Field Reference",
+              url: "https://swastiksagar.tech/apps/mitreattack/",
+              publisher: { "@id": "https://swastiksagar.tech/apps/mitreattack/#organization" },
+              description:
+                "A plain-language field reference to the MITRE ATT&CK enterprise matrix for SOC analysts.",
+            },
+          ],
+        }),
+      },
+    ],
+  }),
+  shellComponent: RootShell,
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
+});
+
+function RootShell({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+function SiteHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <header className="site-brand-header sticky top-0 z-30 border-b border-border backdrop-blur-sm">
+      <div className="mx-auto flex items-center justify-between gap-4">
+        <Link
+          to="/"
+          className="flex min-w-0 shrink-0 items-center gap-3 font-sans text-sm font-extrabold tracking-tight text-foreground"
+        >
+          <span className="site-brand-icon" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="truncate">ATT&CK Reference</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            className="site-mobile-trigger flex h-10 w-10 rounded-md items-center justify-center hover:bg-accent text-foreground transition-colors"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="primary-navigation"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="sr-only">Menu</span>
+            <span className="absolute left-1/2 -translate-x-1/2 h-1 w-full bg-foreground rounded-md transition-transform duration-200" 
+              style={{ transform: menuOpen ? 'translateY(4px) rotate(45deg)' : 'translateY(0) rotate(0)' }}>
+              <span className="absolute left-1/2 -translate-x-1/2 h-1 w-full bg-foreground rounded-md transition-transform duration-200" 
+                style={{ transform: menuOpen ? 'translateY(-3px) rotate(-45deg)' : 'translateY(0) rotate(0)' }}/>
+            </span>
+          </span>
+          </button>
+        </div>
+        <nav
+          aria-label="Primary"
+          id="primary-navigation"
+          className={`absolute top-full right-0 left-0 mt-4 w-full max-w-md mx-auto rounded-md bg-card shadow-md flex flex-col gap-2 p-4 ${menuOpen ? "block" : "hidden"}`}
+        >
+          <Link
+            to="/matrix"
+            activeProps={{ className: "text-foreground" }}
+            className="transition-colors hover:text-foreground"
+            onClick={() => setMenuOpen(false)}
+          >
+            Matrix
+          </Link>
+          <Link
+            to="/search"
+            activeProps={{ className: "text-foreground" }}
+            className="transition-colors hover:text-foreground"
+            onClick={() => setMenuOpen(false)}
+          >
+            Search
+          </Link>
+          <Link
+            to="/playbooks"
+            activeProps={{ className: "text-foreground" }}
+            className="transition-colors hover:text-foreground"
+            onClick={() => setMenuOpen(false)}
+          >
+            Playbooks
+          </Link>
+          <a href="/#how" className="transition-colors hover:text-foreground" onClick={() => setMenuOpen(false)}>
+            How to read it
+          </a>
+        </nav>
+        <div className="flex shrink-0 items-center gap-3">
+          <a className="site-brand-home" href="https://swastiksagar.tech/">
+            Portfolio
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}
+function SiteFooter() {
+  return (
+    <footer className="site-brand-footer mt-16 border-t border-border py-10">
+      <div className="mx-auto font-sans text-xs leading-relaxed text-ink-dim">
+        <p>
+          Independent study reference. ATT&amp;CK® is a registered trademark of The MITRE
+          Corporation, which does not endorse this page. Canonical source:{" "}
+          <a
+            href="https://attack.mitre.org"
+            className="link-inline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            attack.mitre.org
+          </a>
+          .
+        </p>
+        <p className="mt-3">Enterprise matrix · free to use · no signup</p>
+        <a
+          className="mt-4 inline-flex font-semibold text-foreground hover:text-accent"
+          href="https://swastiksagar.tech/"
+        >
+          ← Back to Swastik Sagar’s portfolio
+        </a>
+      </div>
+    </footer>
+  );
+}
+
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SiteHeader />
+      <main className="mitre-main">
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </main>
+      <SiteFooter />
+    </QueryClientProvider>
+  );
+}

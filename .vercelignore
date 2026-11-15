@@ -1,0 +1,23 @@
+# Ignored files and directories
+node_modules/
+dist/
+.output/
+.vercel/
+.vinxi/
+.nitro/
+.env*
+mitreattack/node_modules/
+mitreattack/dist/
+mitreattack/.output/
+mitreattack/.vercel/
+scanmail/node_modules/
+scanmail/dist/
+scanmail/.output/
+scanmail/.vercel/
+swastik-portfolio/node_modules/
+swastik-portfolio/dist/
+swastik-portfolio/.output/
+swastik-portfolio/.vercel/
+.npm
+*.log
+.DS_Store

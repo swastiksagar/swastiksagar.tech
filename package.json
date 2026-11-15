@@ -1,0 +1,14 @@
+{
+  "name": "swastik-portfolio-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm run build && npm run preview",
+    "dev:portfolio": "npm --prefix swastik-portfolio run dev",
+    "build": "npm --prefix swastik-portfolio run build && npm --prefix mitreattack run build && npm --prefix scanmail run build && node scripts/compose-static-deployment.mjs",
+    "preview": "npm --prefix swastik-portfolio run preview"
+  },
+  "dependencies": {
+    "@google/genai": "^3.3.0",
+    "dotenv": "^18.0.10"
+  }
+}
